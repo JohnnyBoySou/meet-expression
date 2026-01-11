@@ -4,6 +4,7 @@
  */
 
 import { createHybridEngine } from "@analyzers/hybrid_engine";
+import { createLandmarkFlowEngine } from "@analyzers/landmark_based_flow";
 import { createFullFaceFlowEngine } from "@analyzers/optical_flow";
 import { defaultThresholdsConfig } from "@config/thresholds_config";
 import { createSalesScoringEngine } from "@logic/scoring_engine";
@@ -70,12 +71,17 @@ export function createFaceExpressionEngine(
 	const gazeTracker = createGazeTracker(config);
 	const vad = createVoiceActivityDetector(config);
 	const hybridEngine = createHybridEngine();
-	const flowEngine = createFullFaceFlowEngine();
+	// Usar landmark-based flow (rápido) ao invés de optical flow (lento com OpenCV)
+	// Para usar optical flow com OpenCV, troque para: createFullFaceFlowEngine()
+	const flowEngine = createLandmarkFlowEngine();
 	const scoringEngine = createSalesScoringEngine(facsConfig);
 
 	// Window buffer
 	let buffer: BufferEntry[] = [];
 	let lastAnalysisTime = Date.now();
+	let lastOpticalFlowTime = 0;
+	const OPTICAL_FLOW_INTERVAL = 3; // Executar optical flow a cada 3 frames (reduz de ~30fps para ~10fps)
+	let frameCount = 0;
 
 	// Current state
 	let currentDecision: ExpressionResult | null = null;
@@ -100,7 +106,7 @@ export function createFaceExpressionEngine(
 		frame: HTMLVideoElement | HTMLImageElement | HTMLCanvasElement | ImageData,
 	): Promise<FrameResult | null> {
 		if (!tracker.isInitialized()) {
-			console.warn("Engine not initialized.");
+			console.warn("[Engine] Not initialized.");
 			return null;
 		}
 
@@ -112,6 +118,7 @@ export function createFaceExpressionEngine(
 			!detectionResult.faceLandmarks ||
 			detectionResult.faceLandmarks.length === 0
 		) {
+			// Sem face detectada - não é erro, apenas retorna null
 			return null;
 		}
 
@@ -146,14 +153,26 @@ export function createFaceExpressionEngine(
 		const gazeResult = gazeTracker.analyze(landmarks);
 		const isSpeaking = vad.isSpeaking(landmarks);
 
-		if (rotPenalty < 0.3) {
+		// Landmark-Based Flow (rápido, sem OpenCV)
+		// Executar apenas a cada N frames para reduzir carga
+		frameCount++;
+		const shouldRunFlow =
+			rotPenalty < 0.3 &&
+			(frameCount % OPTICAL_FLOW_INTERVAL === 0 || lastOpticalFlowTime === 0);
+
+		if (shouldRunFlow) {
 			try {
-				const strains = await flowEngine.analyze(
-					frame,
-					landmarks,
-					width,
-					height,
-				);
+				const flowStart = performance.now();
+				// Landmark-based flow é síncrono e rápido, mas mantemos como Promise para compatibilidade
+				const strains = await flowEngine.analyze(landmarks, width, height);
+				const flowTime = performance.now() - flowStart;
+				lastOpticalFlowTime = flowTime;
+
+				if (flowTime > 10) {
+					console.warn(
+						`[Engine] Flow analysis lento: ${flowTime.toFixed(1)}ms`,
+					);
+				}
 
 				if (strains.brow < -3.0) {
 					aus.AU4 = Math.max(aus.AU4 || 0, 0.45);
@@ -169,8 +188,9 @@ export function createFaceExpressionEngine(
 						}
 					}
 				}
-			} catch (error) {
-				console.warn("Optical flow analysis failed:", error);
+			} catch {
+				// Silenciar erros de timeout ou falhas do optical flow
+				// O processamento continua sem os boosts do optical flow
 			}
 		}
 
@@ -230,7 +250,11 @@ export function createFaceExpressionEngine(
 					lastAnalysisTime = timestamp;
 
 					if (onDecisionCallback && currentDecision) {
-						onDecisionCallback(currentDecision);
+						try {
+							onDecisionCallback(currentDecision);
+						} catch (error) {
+							console.error("[Engine] Erro no callback onDecision:", error);
+						}
 					}
 				}
 			}
@@ -244,7 +268,11 @@ export function createFaceExpressionEngine(
 			};
 
 			if (onResultCallback) {
-				onResultCallback(result);
+				try {
+					onResultCallback(result);
+				} catch (error) {
+					console.error("[Engine] Erro no callback onResult:", error);
+				}
 			}
 
 			return result;
@@ -280,3 +308,19 @@ export function createFaceExpressionEngine(
 		onDecision,
 	};
 }
+
+// Export default FACS config
+export { defaultFACSConfig } from "@config/facs_config";
+
+// Export types from @type/index
+export type {
+	ActionUnits,
+	Blendshape,
+	ExpressionResult,
+	FACSConfig,
+	FaceLandmarkResult,
+	LandmarkPoint,
+	MetaSignals,
+	ThresholdsConfig,
+	WindowPayload,
+} from "@type/index";

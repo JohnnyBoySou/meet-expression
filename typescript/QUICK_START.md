@@ -2,23 +2,34 @@
 
 ## Resumo Rápido
 
-### O Que Você Precisa Passar
+### O Que Você Precisa Instalar e Passar
 
-1. **MediaPipe FaceLandmarker** ✅ (passado como parâmetro)
-2. **OpenCV** ✅ (já incluído, não precisa passar)
+1. **MediaPipe FaceLandmarker** ✅ (instalar + passar como parâmetro)
+2. **OpenCV** ✅ (instalar - carregado automaticamente pelo módulo)
+3. **FACS Config** ✅ (já incluído no módulo, pode usar `defaultFACSConfig`)
 
-### Instalação
+### Instalação Obrigatória
+
+**IMPORTANTE**: Você precisa instalar ambas as dependências no seu projeto frontend:
 
 ```bash
 npm install @mediapipe/tasks-vision @techstark/opencv-js
+# ou
+yarn add @mediapipe/tasks-vision @techstark/opencv-js
+# ou
+bun add @mediapipe/tasks-vision @techstark/opencv-js
 ```
 
 ### Código Mínimo
 
 ```typescript
-import { createFaceExpressionEngine } from '@meet-expression/core';
+import { 
+  createFaceExpressionEngine, 
+  defaultFACSConfig,
+  type ExpressionResult,
+  type FrameResult 
+} from '@meet-expression/core';
 import { FaceLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
-import facsConfig from './config/FACS_IA_decision_ready_v1.json';
 
 // 1. Inicializar MediaPipe
 const filesetResolver = await FilesetResolver.forVisionTasks(
@@ -39,13 +50,18 @@ const faceLandmarker = await FaceLandmarker.createFromOptions(
 
 // 2. Criar engine (MediaPipe passado aqui)
 const engine = createFaceExpressionEngine(
-  { facsConfig },
+  { facsConfig: defaultFACSConfig }, // Usa a config padrão do módulo
   faceLandmarker // ← MediaPipe aqui
 );
 
-// 3. Usar
-engine.onResult((result) => {
+// 3. Usar com tipos
+engine.onResult((result: FrameResult) => {
   console.log('AUs:', result.aus);
+  console.log('Meta:', result.meta);
+});
+
+engine.onDecision((decision: ExpressionResult) => {
+  console.log('Decisão:', decision.dominant_dimension, decision.dominant_value);
 });
 
 // Processar frame (async)
@@ -60,10 +76,25 @@ projeto-react/
 │   └── models/
 │       └── face_landmarker.task  ← Baixar do MediaPipe
 ├── src/
-│   ├── config/
-│   │   └── FACS_IA_decision_ready_v1.json
 │   └── components/
 │       └── FaceExpression.tsx
+```
+
+**Nota**: O `FACS_IA_decision_ready_v1.json` agora está incluído no módulo e pode ser importado como `defaultFACSConfig`. Não é necessário copiar o arquivo JSON para o seu projeto!
+
+### Usando Configuração Customizada
+
+Se você quiser usar uma configuração FACS personalizada:
+
+```typescript
+import { createFaceExpressionEngine } from '@meet-expression/core';
+import type { FACSConfig } from '@meet-expression/core';
+import myCustomFACSConfig from './my-custom-facs-config.json';
+
+const engine = createFaceExpressionEngine(
+  { facsConfig: myCustomFACSConfig as FACSConfig },
+  faceLandmarker
+);
 ```
 
 ### Parâmetros da Função
@@ -71,7 +102,7 @@ projeto-react/
 ```typescript
 createFaceExpressionEngine(
   options: {
-    facsConfig: FACSConfig,        // OBRIGATÓRIO
+    facsConfig: FACSConfig,        // OBRIGATÓRIO (use defaultFACSConfig)
     thresholdsConfig?: ThresholdsConfig, // Opcional
     windowSeconds?: number,        // Opcional (padrão: 4.0)
     fps?: number,                  // Opcional (padrão: 30)
@@ -82,9 +113,10 @@ createFaceExpressionEngine(
 
 ### Sobre o OpenCV
 
-- ✅ Já está incluído no módulo
-- ✅ Carregado automaticamente quando necessário
-- ✅ Você **NÃO precisa** passar nada relacionado ao OpenCV
+- ⚠️ **Você precisa instalar**: `npm install @techstark/opencv-js`
+- ✅ Carregado automaticamente quando necessário (não precisa inicializar manualmente)
+- ✅ Você **NÃO precisa** passar nada relacionado ao OpenCV para o engine
+- ✅ O módulo detecta e carrega o OpenCV automaticamente quando o optical flow é usado
 
 ### Ver Documentação Completa
 

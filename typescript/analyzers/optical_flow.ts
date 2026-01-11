@@ -53,6 +53,7 @@ async function getOpenCV(): Promise<OpenCV | null> {
 
 	cvInitializing = (async () => {
 		try {
+			console.log("[OpenCV] Iniciando carregamento...");
 			let cv: OpenCV;
 
 			if (cvModule instanceof Promise) {
@@ -62,6 +63,7 @@ async function getOpenCV(): Promise<OpenCV | null> {
 				if (cvModuleTyped.Mat) {
 					cv = cvModule as unknown as OpenCV;
 				} else {
+					console.log("[OpenCV] Aguardando inicialização do runtime...");
 					await new Promise<void>((resolve) => {
 						if (cvModuleTyped.onRuntimeInitialized) {
 							const originalCallback = cvModuleTyped.onRuntimeInitialized;
@@ -78,9 +80,10 @@ async function getOpenCV(): Promise<OpenCV | null> {
 			}
 
 			cvInstance = cv;
+			console.log("[OpenCV] Carregado com sucesso!");
 			return cv;
 		} catch (error) {
-			console.error("Erro ao inicializar OpenCV:", error);
+			console.error("[OpenCV] Erro ao inicializar:", error);
 			cvInitializing = null;
 			return null as unknown as OpenCV;
 		}
@@ -317,10 +320,15 @@ async function calculateOpticalFlow(
 	prev: CropData,
 	curr: CropData,
 ): Promise<{ flowX: number[][]; flowY: number[][] } | null> {
+	const cvStart = performance.now();
 	const cv = await getOpenCV();
+	const cvTime = performance.now() - cvStart;
+	if (cvTime > 10) {
+		console.log(`[OpenCV] Tempo para obter instância: ${cvTime.toFixed(1)}ms`);
+	}
 	if (!cv) {
 		console.warn(
-			"OpenCV.js não está disponível. Instale: npm install @techstark/opencv-js",
+			"[OpenCV] OpenCV.js não está disponível. Instale: npm install @techstark/opencv-js",
 		);
 		return null;
 	}
