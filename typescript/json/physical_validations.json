@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "description": "Physical validations using landmarks to validate AU calculations",
+  "validations": {
+    "AU4": {
+      "type": "divergence",
+      "description": "Valida AU4 (testa franzida) usando divergência geométrica das sobrancelhas",
+      "landmarkIndices": [107, 336, 9, 66, 296],
+      "conditions": {
+        "auThreshold": 0.15,
+        "divergenceDeltaThreshold": 6.0
+      },
+      "action": {
+        "type": "penalize",
+        "multiplier": 0.2
+      }
+    }
+  }
+}

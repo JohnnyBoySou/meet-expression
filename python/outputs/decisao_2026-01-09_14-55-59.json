@@ -1,0 +1,22 @@
+{
+  "dominant_dimension": "stress_load",
+  "dominant_value": 6,
+  "active_combos": [],
+  "scores": {
+    "engagement": -2.0,
+    "affiliation": -1.0,
+    "approval": -2.0,
+    "resistance": 3.0,
+    "stress_load": 6.0,
+    "aversion": 0.0,
+    "incongruence_risk": 4.0
+  },
+  "recommended_actions": [
+    "diminuir ritmo, oferecer opção simples e tempo"
+  ],
+  "questions": [
+    "Quer que eu resuma em 1 frase?",
+    "Prefere decidir depois com calma?",
+    "O que deixaria isso mais leve?"
+  ]
+}

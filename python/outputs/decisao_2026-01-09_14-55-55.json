@@ -1,0 +1,22 @@
+{
+  "dominant_dimension": "engagement",
+  "dominant_value": 0,
+  "active_combos": [],
+  "scores": {
+    "engagement": 0.0,
+    "affiliation": 0.0,
+    "approval": 0.0,
+    "resistance": 0.0,
+    "stress_load": 0.0,
+    "aversion": 0.0,
+    "incongruence_risk": 0.0
+  },
+  "recommended_actions": [
+    "aproveitar atenção: perguntar e co-construir"
+  ],
+  "questions": [
+    "O que você quer priorizar?",
+    "Onde isso encaixa na sua rotina?",
+    "Qual seria o melhor formato pra você?"
+  ]
+}

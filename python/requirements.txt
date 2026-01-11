@@ -1,0 +1,7 @@
+# Dependências do Sales MicroExpression Engine V4
+# Instalar com: pip install -r requirements.txt
+
+numpy>=1.21.0
+opencv-python>=4.5.5
+mediapipe>=0.10.0
+pyyaml>=6.0

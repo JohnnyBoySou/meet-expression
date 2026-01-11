@@ -1,0 +1,26 @@
+{
+  "dominant_dimension": "resistance",
+  "dominant_value": 44,
+  "active_combos": [
+    [
+      "polite_mask"
+    ]
+  ],
+  "scores": {
+    "engagement": -11.0,
+    "affiliation": -23.0,
+    "approval": -30.0,
+    "resistance": 44.0,
+    "stress_load": 34.0,
+    "aversion": 25.0,
+    "incongruence_risk": 44.0
+  },
+  "recommended_actions": [
+    "pausar, reduzir pressão e convidar objeção real"
+  ],
+  "questions": [
+    "O que aqui não funciona pra você?",
+    "Qual parte ainda não está confortável?",
+    "Se fosse ajustar 1 coisa, qual seria?"
+  ]
+}

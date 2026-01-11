@@ -1,0 +1,42 @@
+# ==============================================================================
+# CONFIG V5.1 - HIPER SENSÍVEL (AU1/AU2 FOCUS)
+# ==============================================================================
+
+system:
+  camera_index: 0
+  resolution: [1280, 720]
+  fps_target: 30
+
+baseline:
+  window_size: 90
+  warmup_frames: 45 # Aumentei um pouco para garantir estabilidade no quadro verde
+
+safety:
+  max_head_rotation_yaw: 30.0   
+  max_head_rotation_pitch: 25.0 
+  min_iod_pixels: 40
+  max_gaze_deviation: 30.0
+
+dynamics:
+  temporal_buffer_size: 5
+  
+  # --- O GRANDE AJUSTE ---
+  # Baixado de 2000 para 600.
+  # Isso vai pegar qualquer movimento de sobrancelha, por menor que seja.
+  acceleration_threshold: 600.0
+  
+  # 1 Frame é suficiente. Se detectou, mostra.
+  min_persistence_frames: 1
+
+texture:
+  roi_size: 64
+  variance_threshold: 5.0
+
+geometry:
+  # Multiplicadores extremos para "amplificar" o movimento da sobrancelha
+  # AU1/AU2 precisam disso para competir com o AU4.
+  brow_sensitivity: 4.0   # Era 1.2 -> Agora é 4x mais forte
+  mouth_sensitivity: 3.0  # Era 1.5 -> Agora é 2x mais forte
+
+vad:
+  speaking_threshold: 0.20

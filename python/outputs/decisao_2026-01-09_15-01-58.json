@@ -1,0 +1,38 @@
+{
+  "dominant_dimension": "approval",
+  "dominant_value": -100,
+  "active_combos": [
+    [
+      "polite_mask"
+    ],
+    [
+      "defensive_irony"
+    ],
+    [
+      "anger_suppressed"
+    ],
+    [
+      "hard_block"
+    ],
+    [
+      "high_cognitive_load"
+    ]
+  ],
+  "scores": {
+    "engagement": -40.0,
+    "affiliation": -51.0,
+    "approval": -100,
+    "resistance": 100,
+    "stress_load": 100,
+    "aversion": 42.0,
+    "incongruence_risk": 100
+  },
+  "recommended_actions": [
+    "fechar próximos passos com clareza e confirmação"
+  ],
+  "questions": [
+    "Faz sentido seguir assim?",
+    "Quer que eu formalize os próximos passos?",
+    "Tem algo que você quer ajustar antes de fechar?"
+  ]
+}

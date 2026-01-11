@@ -1,0 +1,115 @@
+{
+  "version": "1.0.0",
+  "description": "Mapping from MediaPipe blendshapes to FACS Action Units (AUs)",
+  "mappings": {
+    "AU1": {
+      "type": "direct",
+      "blendshapes": ["browInnerUp"]
+    },
+    "AU2": {
+      "type": "average",
+      "blendshapes": ["browOuterUpLeft", "browOuterUpRight"]
+    },
+    "AU4": {
+      "type": "composite",
+      "base": {
+        "type": "average",
+        "blendshapes": ["browDownLeft", "browDownRight"]
+      },
+      "additions": [
+        {
+          "source": "AU1",
+          "multiplier": 0.1
+        }
+      ]
+    },
+    "AU5": {
+      "type": "average",
+      "blendshapes": ["eyeWideLeft", "eyeWideRight"]
+    },
+    "AU6": {
+      "type": "average",
+      "blendshapes": ["cheekSquintLeft", "cheekSquintRight"]
+    },
+    "AU7": {
+      "type": "average",
+      "blendshapes": ["eyeSquintLeft", "eyeSquintRight"]
+    },
+    "AU43": {
+      "type": "average",
+      "blendshapes": ["eyeBlinkLeft", "eyeBlinkRight"]
+    },
+    "AU45": {
+      "type": "reference",
+      "source": "AU43"
+    },
+    "AU9": {
+      "type": "average",
+      "blendshapes": ["noseSneerLeft", "noseSneerRight"]
+    },
+    "AU10": {
+      "type": "average",
+      "blendshapes": ["mouthUpperUpLeft", "mouthUpperUpRight"]
+    },
+    "AU12": {
+      "type": "composite",
+      "base": {
+        "type": "average",
+        "blendshapes": ["mouthSmileLeft", "mouthSmileRight"]
+      },
+      "additions": [
+        {
+          "source": {
+            "type": "average",
+            "blendshapes": ["mouthDimpleLeft", "mouthDimpleRight"]
+          },
+          "multiplier": 1.3
+        }
+      ]
+    },
+    "AU14": {
+      "type": "average",
+      "blendshapes": ["mouthDimpleLeft", "mouthDimpleRight"]
+    },
+    "AU15": {
+      "type": "average",
+      "blendshapes": ["mouthFrownLeft", "mouthFrownRight"]
+    },
+    "AU17": {
+      "type": "direct",
+      "blendshapes": ["chinRaise"]
+    },
+    "AU18": {
+      "type": "direct",
+      "blendshapes": ["mouthPucker"]
+    },
+    "AU20": {
+      "type": "average",
+      "blendshapes": ["mouthStretchLeft", "mouthStretchRight"]
+    },
+    "AU23": {
+      "type": "composite",
+      "base": {
+        "type": "average",
+        "blendshapes": ["mouthPressLeft", "mouthPressRight"]
+      },
+      "multiplier": 0.9
+    },
+    "AU24": {
+      "type": "average",
+      "blendshapes": ["mouthPressLeft", "mouthPressRight"]
+    },
+    "AU25": {
+      "type": "direct",
+      "blendshapes": ["jawOpen"]
+    },
+    "AU26": {
+      "type": "direct",
+      "blendshapes": ["jawDrop"]
+    },
+    "AU28": {
+      "type": "average",
+      "blendshapes": ["mouthRollUpper", "mouthRollLower"]
+    }
+  }
+}

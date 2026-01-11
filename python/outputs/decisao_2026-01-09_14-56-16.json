@@ -1,0 +1,38 @@
+{
+  "dominant_dimension": "resistance",
+  "dominant_value": 100,
+  "active_combos": [
+    [
+      "polite_mask"
+    ],
+    [
+      "defensive_irony"
+    ],
+    [
+      "anger_suppressed"
+    ],
+    [
+      "hard_block"
+    ],
+    [
+      "high_cognitive_load"
+    ]
+  ],
+  "scores": {
+    "engagement": -25.0,
+    "affiliation": -34.0,
+    "approval": -86.0,
+    "resistance": 100,
+    "stress_load": 100,
+    "aversion": 34.0,
+    "incongruence_risk": 100
+  },
+  "recommended_actions": [
+    "pausar, reduzir pressão e convidar objeção real"
+  ],
+  "questions": [
+    "O que aqui não funciona pra você?",
+    "Qual parte ainda não está confortável?",
+    "Se fosse ajustar 1 coisa, qual seria?"
+  ]
+}

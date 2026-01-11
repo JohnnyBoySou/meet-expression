@@ -1,0 +1,867 @@
+{
+  "version": "FACS_IA_decision_ready_v1",
+  "generated_at": "2025-12-22T02:30:31Z",
+  "dimensions": {
+    "engagement": {
+      "desc": "engajamento/atenção (tendência a participar)",
+      "range": "-100..+100"
+    },
+    "affiliation": {
+      "desc": "afeto/aproximação (tendência a vínculo/acolhimento)",
+      "range": "-100..+100"
+    },
+    "approval": {
+      "desc": "aprovação/alinhamento com proposta",
+      "range": "-100..+100"
+    },
+    "resistance": {
+      "desc": "resistência/bloqueio (tendência a discordar/fechar)",
+      "range": "-100..+100"
+    },
+    "stress_load": {
+      "desc": "carga/estresse (sobrecarga cognitiva/pressão)",
+      "range": "-100..+100"
+    },
+    "aversion": {
+      "desc": "aversão/nojo/desprezo (rejeição do estímulo)",
+      "range": "-100..+100"
+    },
+    "incongruence_risk": {
+      "desc": "risco de incongruência (fala vs sinais) / retenção",
+      "range": "-100..+100"
+    }
+  },
+  "scales": {
+    "intensity_scale": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E"
+    ],
+    "laterality_scale": [
+      "L",
+      "R",
+      "B",
+      "ASYM",
+      "UNK"
+    ],
+    "microexpression_threshold_ms": 500
+  },
+  "rules": {
+    "three_confirmations_rule": {
+      "description": "Trate hipótese como 'alta confiança' apenas se houver confirmação em 3\ncamadas (face/voz/corpo/conteúdo/olhar).",
+      "layers": [
+        "face",
+        "voice",
+        "body",
+        "content",
+        "gaze"
+      ],
+      "min_layers": 3
+    },
+    "baseline_required": {
+      "description": "Sempre comparar contra baseline individual (10–20s neutros) para evitar\nfalsos positivos."
+    }
+  },
+  "weights_by_code": {
+    "AU1": {
+      "engagement": -5,
+      "affiliation": 5,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 10,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AU2": {
+      "engagement": 10,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 5,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AU4": {
+      "engagement": -5,
+      "affiliation": -5,
+      "approval": -10,
+      "resistance": 25,
+      "stress_load": 15,
+      "aversion": 5,
+      "incongruence_risk": 10
+    },
+    "AU5": {
+      "engagement": 15,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 10,
+      "aversion": 0,
+      "incongruence_risk": 5
+    },
+    "AU6": {
+      "engagement": 10,
+      "affiliation": 25,
+      "approval": 15,
+      "resistance": -10,
+      "stress_load": -5,
+      "aversion": -10,
+      "incongruence_risk": -5
+    },
+    "AU7": {
+      "engagement": -5,
+      "affiliation": -5,
+      "approval": -5,
+      "resistance": 10,
+      "stress_load": 15,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AU8": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AU9": {
+      "engagement": -10,
+      "affiliation": -20,
+      "approval": -25,
+      "resistance": 25,
+      "stress_load": 10,
+      "aversion": 40,
+      "incongruence_risk": 10
+    },
+    "AU10": {
+      "engagement": -5,
+      "affiliation": -15,
+      "approval": -20,
+      "resistance": 20,
+      "stress_load": 5,
+      "aversion": 25,
+      "incongruence_risk": 10
+    },
+    "AU11": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AU12": {
+      "engagement": 10,
+      "affiliation": 25,
+      "approval": 25,
+      "resistance": -10,
+      "stress_load": -5,
+      "aversion": -10,
+      "incongruence_risk": -5
+    },
+    "AU13": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AU14": {
+      "engagement": 0,
+      "affiliation": -10,
+      "approval": -10,
+      "resistance": 15,
+      "stress_load": 5,
+      "aversion": 5,
+      "incongruence_risk": 10
+    },
+    "AU15": {
+      "engagement": -10,
+      "affiliation": -10,
+      "approval": -20,
+      "resistance": 20,
+      "stress_load": 10,
+      "aversion": 10,
+      "incongruence_risk": 5
+    },
+    "AU16": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AU17": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AU18": {
+      "engagement": 0,
+      "affiliation": -5,
+      "approval": -5,
+      "resistance": 10,
+      "stress_load": 10,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AU19": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 5,
+      "stress_load": 20,
+      "aversion": 0,
+      "incongruence_risk": 15
+    },
+    "AU20": {
+      "engagement": -5,
+      "affiliation": -10,
+      "approval": -10,
+      "resistance": 10,
+      "stress_load": 25,
+      "aversion": 0,
+      "incongruence_risk": 15
+    },
+    "AU21": {
+      "engagement": -5,
+      "affiliation": -5,
+      "approval": -5,
+      "resistance": 20,
+      "stress_load": 25,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AU22": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AU23": {
+      "engagement": -5,
+      "affiliation": -5,
+      "approval": -10,
+      "resistance": 25,
+      "stress_load": 15,
+      "aversion": 5,
+      "incongruence_risk": 10
+    },
+    "AU24": {
+      "engagement": -5,
+      "affiliation": -5,
+      "approval": -15,
+      "resistance": 35,
+      "stress_load": 15,
+      "aversion": 5,
+      "incongruence_risk": 15
+    },
+    "AU25": {
+      "engagement": 10,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 5,
+      "aversion": 0,
+      "incongruence_risk": 5
+    },
+    "AU26": {
+      "engagement": 10,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 10,
+      "aversion": 0,
+      "incongruence_risk": 5
+    },
+    "AU27": {
+      "engagement": 10,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 20,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AU28": {
+      "engagement": -5,
+      "affiliation": -5,
+      "approval": -5,
+      "resistance": 10,
+      "stress_load": 25,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AU41": {
+      "engagement": -25,
+      "affiliation": 0,
+      "approval": -10,
+      "resistance": 10,
+      "stress_load": 10,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AU42": {
+      "engagement": -5,
+      "affiliation": -5,
+      "approval": -5,
+      "resistance": 10,
+      "stress_load": 10,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AU43": {
+      "engagement": -10,
+      "affiliation": -5,
+      "approval": -10,
+      "resistance": 10,
+      "stress_load": 15,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AU44": {
+      "engagement": -5,
+      "affiliation": -10,
+      "approval": -10,
+      "resistance": 15,
+      "stress_load": 10,
+      "aversion": 5,
+      "incongruence_risk": 10
+    },
+    "AU45": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 5,
+      "stress_load": 15,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AU46": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "HEAD51": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "HEAD52": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "HEAD53": {
+      "engagement": 0,
+      "affiliation": -5,
+      "approval": -5,
+      "resistance": 10,
+      "stress_load": 5,
+      "aversion": 0,
+      "incongruence_risk": 5
+    },
+    "HEAD54": {
+      "engagement": -5,
+      "affiliation": 0,
+      "approval": -5,
+      "resistance": 5,
+      "stress_load": 5,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "HEAD55": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "HEAD56": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "HEAD57": {
+      "engagement": 10,
+      "affiliation": 0,
+      "approval": 5,
+      "resistance": -5,
+      "stress_load": 5,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "HEAD58": {
+      "engagement": -10,
+      "affiliation": -5,
+      "approval": -10,
+      "resistance": 10,
+      "stress_load": 10,
+      "aversion": 0,
+      "incongruence_risk": 5
+    },
+    "GAZE61": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 5,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "GAZE62": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 5,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "GAZE63": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 5,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "GAZE64": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 10,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AD_EXT29": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AD_EXT30": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AD_EXT31": {
+      "engagement": -5,
+      "affiliation": -5,
+      "approval": -10,
+      "resistance": 25,
+      "stress_load": 20,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AD_EXT32": {
+      "engagement": -5,
+      "affiliation": -5,
+      "approval": -5,
+      "resistance": 10,
+      "stress_load": 25,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AD_EXT34": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AD_EXT35": {
+      "engagement": -5,
+      "affiliation": -5,
+      "approval": -5,
+      "resistance": 10,
+      "stress_load": 20,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AD_EXT37": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 0,
+      "stress_load": 0,
+      "aversion": 0,
+      "incongruence_risk": 0
+    },
+    "AD_EXT38": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 10,
+      "stress_load": 15,
+      "aversion": 0,
+      "incongruence_risk": 10
+    },
+    "AD_EXT39": {
+      "engagement": 0,
+      "affiliation": 0,
+      "approval": 0,
+      "resistance": 10,
+      "stress_load": 15,
+      "aversion": 0,
+      "incongruence_risk": 10
+    }
+  },
+  "combo_rules": [
+    {
+      "id": "C_DUCHENNE",
+      "requires": [
+        "AU12",
+        "AU6"
+      ],
+      "forbids": [],
+      "description": "Sorriso genuíno (Duchenne)",
+      "adjustments": {
+        "engagement": 10,
+        "affiliation": 15,
+        "approval": 10,
+        "resistance": -10,
+        "stress_load": -5,
+        "aversion": -10,
+        "incongruence_risk": -10
+      },
+      "tag": [
+        "joy_genuine",
+        "trust_signal"
+      ],
+      "recommended_action": "avançar e consolidar acordo",
+      "validation_questions": [
+        "Faz sentido seguir assim?",
+        "Quer que eu formalize os próximos passos?",
+        "Tem algo que você quer ajustar antes de fechar?"
+      ]
+    },
+    {
+      "id": "C_SOCIAL_SMILE",
+      "requires": [
+        "AU12"
+      ],
+      "forbids": [
+        "AU6"
+      ],
+      "description": "Sorriso social (boca sem olhos)",
+      "adjustments": {
+        "engagement": 0,
+        "affiliation": -5,
+        "approval": -5,
+        "resistance": 5,
+        "stress_load": 0,
+        "aversion": 0,
+        "incongruence_risk": 15
+      },
+      "tag": [
+        "polite_mask"
+      ],
+      "recommended_action": "calibrar antes de avançar",
+      "validation_questions": [
+        "Em uma escala de 0 a 10, quão ok você está com isso?",
+        "O que você ainda não está dizendo?",
+        "O que precisaria ser verdade pra você topar?"
+      ]
+    },
+    {
+      "id": "C_CYNICAL_DEFENSE",
+      "requires": [
+        "AU14",
+        "AU7"
+      ],
+      "forbids": [],
+      "description": "Cinismo defensivo / ironia sob tensão",
+      "adjustments": {
+        "engagement": -5,
+        "affiliation": -10,
+        "approval": -15,
+        "resistance": 20,
+        "stress_load": 10,
+        "aversion": 5,
+        "incongruence_risk": 15
+      },
+      "tag": [
+        "defensive_irony"
+      ],
+      "recommended_action": "reduzir pressão e perguntar objeção real",
+      "validation_questions": [
+        "O que aqui não funciona pra você?",
+        "Qual parte ainda não está confortável?",
+        "Se fosse ajustar 1 coisa, qual seria?"
+      ]
+    },
+    {
+      "id": "C_ANGER_SUPPRESSED",
+      "requires": [
+        "AU4",
+        "AU23"
+      ],
+      "forbids": [],
+      "description": "Raiva contida (tensão + boca)",
+      "adjustments": {
+        "engagement": -5,
+        "affiliation": -10,
+        "approval": -15,
+        "resistance": 30,
+        "stress_load": 20,
+        "aversion": 5,
+        "incongruence_risk": 10
+      },
+      "tag": [
+        "anger_suppressed"
+      ],
+      "recommended_action": "pausar e descompressão",
+      "validation_questions": [
+        "O que aqui não funciona pra você?",
+        "Qual parte ainda não está confortável?",
+        "Se fosse ajustar 1 coisa, qual seria?"
+      ]
+    },
+    {
+      "id": "C_BLOCKED_NO",
+      "requires": [
+        "AU24"
+      ],
+      "forbids": [],
+      "description": "Bloqueio/discordância forte (pressor)",
+      "adjustments": {
+        "engagement": -5,
+        "affiliation": -5,
+        "approval": -20,
+        "resistance": 35,
+        "stress_load": 15,
+        "aversion": 0,
+        "incongruence_risk": 10
+      },
+      "tag": [
+        "hard_block"
+      ],
+      "recommended_action": "pausar, espelhar e pedir objeção",
+      "validation_questions": [
+        "O que aqui não funciona pra você?",
+        "Qual parte ainda não está confortável?",
+        "Se fosse ajustar 1 coisa, qual seria?"
+      ]
+    },
+    {
+      "id": "C_DISGUST_MORAL",
+      "requires": [
+        "AU9",
+        "AU10"
+      ],
+      "forbids": [],
+      "description": "Nojo + desprezo (aversão moral)",
+      "adjustments": {
+        "engagement": -15,
+        "affiliation": -25,
+        "approval": -30,
+        "resistance": 25,
+        "stress_load": 10,
+        "aversion": 40,
+        "incongruence_risk": 10
+      },
+      "tag": [
+        "moral_disgust"
+      ],
+      "recommended_action": "mudar frame e recontratar valor",
+      "validation_questions": [
+        "O que te incomodou especificamente?",
+        "Qual parte soa ruim/errada pra você?",
+        "Que alternativa faria sentido?"
+      ]
+    },
+    {
+      "id": "C_SADNESS",
+      "requires": [
+        "AU1",
+        "AU15"
+      ],
+      "forbids": [],
+      "description": "Tristeza/desânimo (brow + mouth down)",
+      "adjustments": {
+        "engagement": -15,
+        "affiliation": 5,
+        "approval": -10,
+        "resistance": 10,
+        "stress_load": 15,
+        "aversion": 0,
+        "incongruence_risk": 0
+      },
+      "tag": [
+        "sadness"
+      ],
+      "recommended_action": "acolher e reduzir exigência",
+      "validation_questions": [
+        "Quer que a gente faça isso mais simples agora?",
+        "O que está pesado hoje?",
+        "Como eu posso te ajudar aqui?"
+      ]
+    },
+    {
+      "id": "C_HIGH_LOAD",
+      "requires": [
+        "AU45",
+        "AU7"
+      ],
+      "forbids": [],
+      "description": "Carga alta (piscar + aperto ocular)",
+      "adjustments": {
+        "engagement": -5,
+        "affiliation": 0,
+        "approval": -5,
+        "resistance": 10,
+        "stress_load": 30,
+        "aversion": 0,
+        "incongruence_risk": 15
+      },
+      "tag": [
+        "high_cognitive_load"
+      ],
+      "recommended_action": "diminuir ritmo e oferecer pausa",
+      "validation_questions": [
+        "Quer que eu resuma em 1 frase?",
+        "Prefere decidir depois com calma?",
+        "O que deixaria isso mais leve?"
+      ]
+    },
+    {
+      "id": "C_AVOIDANCE_RECOIL",
+      "requires": [
+        "HEAD58"
+      ],
+      "forbids": [],
+      "description": "Recuo/evitação (cabeça para trás)",
+      "adjustments": {
+        "engagement": -10,
+        "affiliation": -5,
+        "approval": -10,
+        "resistance": 15,
+        "stress_load": 10,
+        "aversion": 0,
+        "incongruence_risk": 5
+      },
+      "tag": [
+        "avoidance"
+      ],
+      "recommended_action": "dar espaço e perguntar preferência",
+      "validation_questions": [
+        "Prefere outra opção?",
+        "Quer pensar e me dizer depois?",
+        "O que deixaria isso confortável?"
+      ]
+    }
+  ],
+  "default_actions_questions": {
+    "resistance": {
+      "action": "pausar, reduzir pressão e convidar objeção real",
+      "questions": [
+        "O que aqui não funciona pra você?",
+        "Qual parte ainda não está confortável?",
+        "Se fosse ajustar 1 coisa, qual seria?"
+      ]
+    },
+    "stress_load": {
+      "action": "diminuir ritmo, oferecer opção simples e tempo",
+      "questions": [
+        "Quer que eu resuma em 1 frase?",
+        "Prefere decidir depois com calma?",
+        "O que deixaria isso mais leve?"
+      ]
+    },
+    "aversion": {
+      "action": "mudar enquadramento/tópico e checar valor percebido",
+      "questions": [
+        "O que te incomodou especificamente?",
+        "Qual parte soa ruim/errada pra você?",
+        "Que alternativa faria sentido?"
+      ]
+    },
+    "affiliation": {
+      "action": "aprofundar vínculo e avançar com próxima etapa",
+      "questions": [
+        "O que mais te agradou nisso?",
+        "Quer que eu mostre o próximo passo?",
+        "Qual resultado você quer primeiro?"
+      ]
+    },
+    "engagement": {
+      "action": "aproveitar atenção: perguntar e co-construir",
+      "questions": [
+        "O que você quer priorizar?",
+        "Onde isso encaixa na sua rotina?",
+        "Qual seria o melhor formato pra você?"
+      ]
+    },
+    "incongruence_risk": {
+      "action": "calibrar com pergunta neutra e checar congruência",
+      "questions": [
+        "Em uma escala de 0 a 10, quão ok você está com isso?",
+        "O que você ainda não está dizendo?",
+        "O que precisaria ser verdade pra você topar?"
+      ]
+    },
+    "approval": {
+      "action": "fechar próximos passos com clareza e confirmação",
+      "questions": [
+        "Faz sentido seguir assim?",
+        "Quer que eu formalize os próximos passos?",
+        "Tem algo que você quer ajustar antes de fechar?"
+      ]
+    }
+  },
+  "scoring_pipeline": [
+    "1) Calibrar baseline individual (10–20s).",
+    "2) Registrar eventos (AUs/HEAD/GAZE/AD_EXT) com intensidade, lateralidade e\ntiming.",
+    "3) Somar pesos por evento (opcional: multiplicar por intensidade A–E => 0.2..1.0).",
+    "4) Aplicar ajustes de combo_rules quando padrões ocorrerem.",
+    "5) Normalizar dimensões (ex.: clamp -100..+100) e mapear para 0..100 se necessário.",
+    "6) Escolher ação e perguntas: use a dimensão dominante negativa\n(resistance/stress/aversion/incongruence) ou positiva (approval/affiliation/engagement)."
+  ],
+  "notes": "Pesos são heurísticos (ponto de partida). Ajuste com seus dados e validação\nhumana."
+}

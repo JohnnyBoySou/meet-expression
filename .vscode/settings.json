@@ -1,0 +1,6 @@
+{
+    "files.exclude": {
+        "typescript-module/node_modules": true,
+        "typescript-module/.cursor": true
+    }
+}
