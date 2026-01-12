@@ -10,7 +10,6 @@
 
 import { FaceLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
 import { useEffect, useRef, useState } from 'react';
-import facsConfig from './config/FACS_IA_decision_ready_v1.json';
 import { createFaceExpressionEngine, type FrameResult } from './index';
 import type { ExpressionResult } from './types/index';
 
@@ -65,7 +64,9 @@ export function FaceExpressionDemo({
         console.log('Criando Face Expression Engine...');
         const engine = createFaceExpressionEngine(
           {
-            facsConfig: facsConfig,
+            // facsConfig é opcional - usa defaultFACSConfig do módulo se não fornecido
+            // Para usar config customizada: facsConfig: myCustomConfig
+            apiUrl: 'http://localhost:8000/api/score', // Opcional: envia resultados para API/IA
             windowSeconds,
             fps,
           },
@@ -222,7 +223,7 @@ export function FaceExpressionDemo({
         <div style={{ padding: '20px', textAlign: 'center' }}>
           <p>Inicializando engine...</p>
           <p style={{ fontSize: '12px', color: '#666' }}>
-            Carregando MediaPipe e OpenCV...
+            Carregando MediaPipe...
           </p>
         </div>
       )}
@@ -361,7 +362,15 @@ export function FaceExpressionDemo({
               )}
 
               <div style={{ marginTop: '15px', fontSize: '12px', color: '#666' }}>
-                <strong>Combos Ativos:</strong> {decision.active_combos.join(', ') || 'Nenhum'}
+                <strong>Combos Ativos:</strong>{' '}
+                {decision.active_combos.length > 0
+                  ? decision.active_combos.map((combo, i) => (
+                      <span key={i}>
+                        {combo.join(', ')}
+                        {i < decision.active_combos.length - 1 ? '; ' : ''}
+                      </span>
+                    ))
+                  : 'Nenhum'}
               </div>
             </div>
           )}

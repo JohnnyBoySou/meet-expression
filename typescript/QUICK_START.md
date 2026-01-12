@@ -5,19 +5,18 @@
 ### O Que Você Precisa Instalar e Passar
 
 1. **MediaPipe FaceLandmarker** ✅ (instalar + passar como parâmetro)
-2. **OpenCV** ✅ (instalar - carregado automaticamente pelo módulo)
-3. **FACS Config** ✅ (já incluído no módulo, pode usar `defaultFACSConfig`)
+2. **FACS Config** ✅ (opcional - scoring agora é feito no backend via API)
 
 ### Instalação Obrigatória
 
-**IMPORTANTE**: Você precisa instalar ambas as dependências no seu projeto frontend:
+**IMPORTANTE**: Você precisa instalar o MediaPipe no seu projeto frontend:
 
 ```bash
-npm install @mediapipe/tasks-vision @techstark/opencv-js
+npm install @mediapipe/tasks-vision
 # ou
-yarn add @mediapipe/tasks-vision @techstark/opencv-js
+yarn add @mediapipe/tasks-vision
 # ou
-bun add @mediapipe/tasks-vision @techstark/opencv-js
+bun add @mediapipe/tasks-vision
 ```
 
 ### Código Mínimo
@@ -111,12 +110,11 @@ createFaceExpressionEngine(
 )
 ```
 
-### Sobre o OpenCV
+### Sobre o Scoring
 
-- ⚠️ **Você precisa instalar**: `npm install @techstark/opencv-js`
-- ✅ Carregado automaticamente quando necessário (não precisa inicializar manualmente)
-- ✅ Você **NÃO precisa** passar nada relacionado ao OpenCV para o engine
-- ✅ O módulo detecta e carrega o OpenCV automaticamente quando o optical flow é usado
+- ✅ O scoring agora é feito no backend via API
+- ✅ Configure a URL da API nas opções: `apiUrl: 'http://localhost:8000/api/score'`
+- ✅ O módulo usa landmark-based flow (rápido, sem dependências externas)
 
 ### Ver Documentação Completa
 

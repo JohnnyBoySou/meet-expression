@@ -11,20 +11,19 @@ export default defineConfig({
 	tsconfig: "./tsconfig.json",
 	external: [
 		"@mediapipe/tasks-vision",
-		"@techstark/opencv-js",
 		"react",
 		"react-dom",
 	],
 	esbuildOptions(options) {
-		// Resolver path aliases manualmente
+		// Resolver path aliases manualmente - apontando para o diretório typescript
 		options.alias = {
-			"@core": "./core",
-			"@analyzers": "./analyzers",
-			"@config": "./config",
-			"@logic": "./logic",
-			"@modules": "./modules",
-			"@type": "./types",
-			"@json": "./json",
+			"@core": "../typescript/core",
+			"@analyzers": "../typescript/analyzers",
+			"@config": "../typescript/config",
+			"@logic": "../typescript/logic",
+			"@modules": "../typescript/modules",
+			"@type": "../typescript/types",
+			"@json": "../typescript/json",
 		};
 	},
 });

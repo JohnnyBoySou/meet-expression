@@ -1,5 +1,10 @@
 {
   "dominant_dimension": "resistance",
+  "user_id": "1234567890",
+  "user_name": "John Doe",
+  "roomSlug": "DXAS09",
+  "start_time": "2026-01-09 14:56:04",
+  "end_time": "2026-01-09 14:56:04",
   "dominant_value": 100,
   "active_combos": [
     [
@@ -33,3 +38,4 @@
     "Se fosse ajustar 1 coisa, qual seria?"
   ]
 }
+

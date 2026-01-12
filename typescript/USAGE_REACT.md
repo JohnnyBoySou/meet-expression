@@ -7,7 +7,7 @@ Este guia explica como integrar o módulo `@meet-expression/core` no seu projeto
 ### 1. Instalar no Projeto React
 
 ```bash
-bun add @mediapipe/tasks-vision @techstark/opencv-js
+bun add @mediapipe/tasks-vision
 ```
 
 ### 2. Baixar o Modelo MediaPipe
@@ -19,10 +19,9 @@ Coloque o arquivo na pasta `public/models/` do seu projeto React.
 
 ## O Que Você Precisa Passar
 
-O módulo precisa de **2 coisas principais**:
+O módulo precisa de **1 coisa principal**:
 
 1. **MediaPipe FaceLandmarker** - Instância inicializada do MediaPipe
-2. **OpenCV** - Já está incluído internamente, mas precisa ser carregado
 
 ## Exemplo Completo de Uso
 
@@ -280,9 +279,20 @@ export function useWebcam() {
    const faceLandmarker = await FaceLandmarker.createFromOptions(...)
    ```
 
-### Sobre o OpenCV
+### Sobre o Scoring
 
-O **OpenCV já está incluído internamente** no módulo via `@techstark/opencv-js`. Você **NÃO precisa** passar o OpenCV manualmente. Ele é carregado automaticamente quando o optical flow é usado.
+O **scoring agora é feito no backend** via API. Configure a URL da API nas opções do engine:
+
+```typescript
+const engine = createFaceExpressionEngine(
+  {
+    apiUrl: 'http://localhost:8000/api/score', // URL da API do backend
+    windowSeconds: 4.0,
+    fps: 30,
+  },
+  faceLandmarker
+);
+```
 
 ## Estrutura de Arquivos Recomendada
 
@@ -304,7 +314,7 @@ seu-projeto-react/
 ## Notas Importantes
 
 1. **MediaPipe**: Deve ser inicializado **antes** de criar o engine
-2. **OpenCV**: Carregado automaticamente, não precisa configurar nada
+2. **API Backend**: Configure a URL da API para processar o scoring
 3. **processFrame**: É **async**, então use `await` ou `.catch()`
 4. **Calibração**: Chame `calibrate()` quando a pessoa estiver com rosto neutro
 5. **Modelo MediaPipe**: Deve estar acessível via URL pública ou no `public/`
@@ -315,9 +325,10 @@ seu-projeto-react/
 - Certifique-se de que o módulo está instalado ou linkado corretamente
 - Se estiver em desenvolvimento local, use `npm link` ou configure path mapping no `tsconfig.json`
 
-### Erro: "OpenCV not initialized"
-- O OpenCV é carregado automaticamente quando necessário
-- Se persistir, verifique se `@techstark/opencv-js` está instalado
+### Erro: "API request failed"
+- Verifique se o backend está rodando
+- Verifique se a URL da API está correta nas opções do engine
+- O módulo retorna um resultado padrão em caso de erro da API
 
 ### Erro: "FaceLandmarker not initialized"
 - Certifique-se de que o MediaPipe foi inicializado corretamente

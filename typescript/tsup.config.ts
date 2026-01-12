@@ -11,7 +11,6 @@ export default defineConfig({
 	tsconfig: "./tsconfig.json",
 	external: [
 		"@mediapipe/tasks-vision",
-		"@techstark/opencv-js",
 		"react",
 		"react-dom",
 	],

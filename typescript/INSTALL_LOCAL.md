@@ -30,7 +30,7 @@ npm link @meet-expression/core
 
 ```bash
 # No projeto React
-npm install @mediapipe/tasks-vision @techstark/opencv-js
+npm install @mediapipe/tasks-vision
 ```
 
 ### 5. Pronto! Use no Código
@@ -77,7 +77,7 @@ npm install
 ### 4. Instalar Dependências Peer
 
 ```bash
-npm install @mediapipe/tasks-vision @techstark/opencv-js
+npm install @mediapipe/tasks-vision
 ```
 
 ## Verificação Rápida

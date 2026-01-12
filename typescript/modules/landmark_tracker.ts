@@ -22,7 +22,12 @@ export interface FaceLandmarkerResult {
 	faceBlendshapes?: Array<{
 		categories: Array<{ categoryName: string; score: number }>;
 	}>;
-	facialTransformationMatrixes?: number[][];
+	// MediaPipe retorna Matrix[] onde Matrix é um tipo específico do MediaPipe
+	// Aceitamos qualquer tipo compatível (Matrix do MediaPipe ou number[][])
+	// O tipo Matrix do MediaPipe é estruturalmente equivalente a number[][] (matriz 4x4)
+	// Usamos um tipo genérico para aceitar o tipo Matrix do MediaPipe sem conflitos de tipo
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	facialTransformationMatrixes?: any[];
 }
 
 export interface LandmarkTracker {

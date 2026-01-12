@@ -17,9 +17,9 @@ TypeScript module for face expression analysis using MediaPipe FaceLandmarker. C
 ### No Projeto React
 
 ```bash
-npm install @mediapipe/tasks-vision @techstark/opencv-js
+npm install @mediapipe/tasks-vision
 # or
-yarn add @mediapipe/tasks-vision @techstark/opencv-js
+yarn add @mediapipe/tasks-vision
 ```
 
 ### Baixar Modelo MediaPipe
@@ -31,10 +31,9 @@ Coloque em `public/models/face_landmarker.task` no seu projeto React.
 
 ## O Que Você Precisa Passar
 
-O módulo precisa de **2 coisas principais**:
+O módulo precisa de **1 coisa principal**:
 
 1. **MediaPipe FaceLandmarker** - Instância inicializada do MediaPipe (passado como parâmetro)
-2. **OpenCV** - Já está incluído internamente via `@techstark/opencv-js`, não precisa passar nada
 
 ## Usage
 
@@ -87,7 +86,6 @@ const video = document.getElementById('video') as HTMLVideoElement;
 await engine.processFrame(video);
 ```
 
-**Nota sobre OpenCV**: O OpenCV é carregado automaticamente quando necessário. Você não precisa fazer nada além de ter `@techstark/opencv-js` instalado.
 
 ### React Hook Example
 
@@ -230,7 +228,7 @@ interface FrameResult {
 interface ExpressionResult {
   dominant_dimension: string;  // e.g., "engagement", "approval", "resistance"
   dominant_value: number;      // -100 to +100
-  active_combos: string[];     // Triggered combo rules
+  active_combos: string[][];   // Triggered combo rules (array de arrays de tags)
   scores: Record<string, number>; // All dimension scores
   recommended_actions: string[];  // Recommended actions
   questions: string[];         // Suggested questions

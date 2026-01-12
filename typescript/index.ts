@@ -5,8 +5,8 @@
 
 import { createHybridEngine } from "@analyzers/hybrid_engine";
 import { createLandmarkFlowEngine } from "@analyzers/landmark_based_flow";
-import { createFullFaceFlowEngine } from "@analyzers/optical_flow";
 import { defaultThresholdsConfig } from "@config/thresholds_config";
+import { defaultFACSConfig } from "@config/facs_config";
 import { createSalesScoringEngine } from "@logic/scoring_engine";
 import { createGazeTracker } from "@modules/gaze_tracker";
 import {
@@ -39,7 +39,8 @@ export interface FrameResult {
 
 export interface FaceExpressionEngineOptions {
 	thresholdsConfig?: ThresholdsConfig;
-	facsConfig: FACSConfig;
+	facsConfig?: FACSConfig; // Opcional: usa defaultFACSConfig se não fornecido
+	apiUrl?: string; // Opcional: URL da API para enviar resultados (frontend envia para backend/IA)
 	windowSeconds?: number;
 	fps?: number;
 }
@@ -56,23 +57,68 @@ export interface FaceExpressionEngine {
 	onDecision(callback: (decision: ExpressionResult) => void): void;
 }
 
+/**
+ * Envia o resultado do scoring para a API (opcional, não bloqueante)
+ */
+async function sendToAPI(
+	apiUrl: string,
+	result: ExpressionResult,
+): Promise<void> {
+	try {
+		await fetch(apiUrl, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(result),
+		});
+	} catch (error) {
+		// Silenciar erros de rede - não deve bloquear o processamento local
+		console.warn("[Engine] Erro ao enviar para API (não bloqueante):", error);
+	}
+}
+
 export function createFaceExpressionEngine(
 	options: FaceExpressionEngineOptions,
 	faceLandmarker: MediaPipeFaceLandmarker,
 ): FaceExpressionEngine {
 	const config = options.thresholdsConfig || defaultThresholdsConfig;
-	const facsConfig = options.facsConfig;
-	const windowSeconds = options.windowSeconds || 4.0;
+	// Usa defaultFACSConfig se não fornecido - já está definido no módulo
+	const facsConfig = options.facsConfig || defaultFACSConfig;
+
+	// Validação do facsConfig (agora sempre tem valor, mas valida estrutura)
+	if (!facsConfig.weights_by_code) {
+		throw new Error(
+			"[Engine] facsConfig inválido: 'weights_by_code' não encontrado.\n" +
+				"Verifique se o JSON está correto.",
+		);
+	}
+
+	if (!facsConfig.combo_rules) {
+		throw new Error(
+			"[Engine] facsConfig inválido: 'combo_rules' não encontrado.\n" +
+				"Verifique se o JSON está correto.",
+		);
+	}
+
+	if (!facsConfig.dimensions) {
+		throw new Error(
+			"[Engine] facsConfig inválido: 'dimensions' não encontrado.\n" +
+				"Verifique se o JSON está correto.",
+		);
+	}
+
+	const apiUrl = options.apiUrl; // Opcional: se fornecido, envia resultados para API
+	const windowSeconds = options.windowSeconds || 4.0; // Janela de tempo para agregação (padrão: 4 segundos)
 	const fps = options.fps || 30;
-	const windowSize = Math.floor(windowSeconds * fps);
+	const windowSize = Math.floor(windowSeconds * fps); // Tamanho do buffer em frames (4s * 30fps = 120 frames)
 
 	// Initialize engines
 	const tracker = createLandmarkTracker(faceLandmarker);
 	const gazeTracker = createGazeTracker(config);
 	const vad = createVoiceActivityDetector(config);
 	const hybridEngine = createHybridEngine();
-	// Usar landmark-based flow (rápido) ao invés de optical flow (lento com OpenCV)
-	// Para usar optical flow com OpenCV, troque para: createFullFaceFlowEngine()
+	// Usar landmark-based flow (rápido, sem dependências externas)
 	const flowEngine = createLandmarkFlowEngine();
 	const scoringEngine = createSalesScoringEngine(facsConfig);
 
@@ -153,7 +199,7 @@ export function createFaceExpressionEngine(
 		const gazeResult = gazeTracker.analyze(landmarks);
 		const isSpeaking = vad.isSpeaking(landmarks);
 
-		// Landmark-Based Flow (rápido, sem OpenCV)
+		// Landmark-Based Flow (rápido, sem dependências externas)
 		// Executar apenas a cada N frames para reduzir carga
 		frameCount++;
 		const shouldRunFlow =
@@ -219,13 +265,17 @@ export function createFaceExpressionEngine(
 				buffer.shift();
 			}
 
+			// Verifica se passou o tempo da janela (padrão: 4 segundos)
 			const timeSinceLastAnalysis = (timestamp - lastAnalysisTime) / 1000;
 			if (timeSinceLastAnalysis >= windowSeconds) {
+				// Só processa se tiver pelo menos 80% dos frames esperados no buffer
 				if (buffer.length >= windowSize * 0.8) {
 					const firstEntry = buffer[0];
 					if (!firstEntry) {
 						return null;
 					}
+
+					// Agrega os AUs: calcula percentil 95 de cada AU na janela de 4 segundos
 					const allKeys = Object.keys(firstEntry.aus);
 					const summaryAus: ActionUnits = {};
 
@@ -237,24 +287,37 @@ export function createFaceExpressionEngine(
 						summaryAus[key] = values[percentile95Index] || 0;
 					}
 
+					// Usa os meta signals do último frame da janela
 					const lastEntry = buffer[buffer.length - 1];
 					if (!lastEntry) {
 						return null;
 					}
+
+					// Prepara o payload com dados agregados da janela de 4 segundos
 					const windowPayload: WindowPayload = {
 						aus: summaryAus,
 						meta: lastEntry.meta,
 					};
 
+					// Processa o scoring localmente usando o scoring engine
 					currentDecision = scoringEngine.process(windowPayload);
 					lastAnalysisTime = timestamp;
 
+					// Chama o callback local (frontend recebe o resultado)
 					if (onDecisionCallback && currentDecision) {
 						try {
 							onDecisionCallback(currentDecision);
 						} catch (error) {
 							console.error("[Engine] Erro no callback onDecision:", error);
 						}
+					}
+
+					// Se apiUrl estiver configurado, envia o resultado para a API (assíncrono, não bloqueante)
+					if (apiUrl && currentDecision) {
+						// Envia de forma assíncrona sem bloquear o processamento
+						sendToAPI(apiUrl, currentDecision).catch(() => {
+							// Erro já tratado na função sendToAPI
+						});
 					}
 				}
 			}

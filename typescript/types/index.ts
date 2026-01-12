@@ -84,7 +84,7 @@ export interface FaceLandmarkResult {
 export interface ExpressionResult {
 	dominant_dimension: string;
 	dominant_value: number;
-	active_combos: string[];
+	active_combos: string[][]; // Array de arrays: cada combo ativado retorna seu array de tags
 	scores: Record<string, number>;
 	recommended_actions: string[];
 	questions: string[];

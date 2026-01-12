@@ -78,13 +78,12 @@ import { createFaceExpressionEngine } from '@meet-expression/core';
 As seguintes dependências são marcadas como `external` e **não** são incluídas no bundle:
 
 - `@mediapipe/tasks-vision` - Deve ser instalado no projeto que usa o módulo
-- `@techstark/opencv-js` - Deve ser instalado no projeto que usa o módulo
 - `react` / `react-dom` - Se você usar React hooks
 
 **Importante**: Certifique-se de instalar essas dependências no seu projeto frontend:
 
 ```bash
-npm install @mediapipe/tasks-vision @techstark/opencv-js
+npm install @mediapipe/tasks-vision
 ```
 
 ## Verificação do Build
@@ -115,7 +114,7 @@ bun run typecheck
 
 - Instale as dependências externas no seu projeto:
   ```bash
-  npm install @mediapipe/tasks-vision @techstark/opencv-js
+  npm install @mediapipe/tasks-vision
   ```
 
 ## Scripts Disponíveis

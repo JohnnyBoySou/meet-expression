@@ -25,9 +25,33 @@ function getIntensityMultiplier(value: number, isAu: boolean = true): number {
 export function createSalesScoringEngine(
 	rules: FACSConfig,
 ): SalesScoringEngine {
-	const weights = rules.weights_by_code || {};
-	const combos = rules.combo_rules || [];
-	const dimensionsList = Object.keys(rules.dimensions || {});
+	if (!rules) {
+		throw new Error(
+			"[ScoringEngine] rules é obrigatório. Forneça a configuração FACS.",
+		);
+	}
+
+	if (!rules.weights_by_code) {
+		throw new Error(
+			"[ScoringEngine] Configuração inválida: 'weights_by_code' não encontrado no FACS config.",
+		);
+	}
+
+	if (!rules.combo_rules) {
+		throw new Error(
+			"[ScoringEngine] Configuração inválida: 'combo_rules' não encontrado no FACS config.",
+		);
+	}
+
+	if (!rules.dimensions) {
+		throw new Error(
+			"[ScoringEngine] Configuração inválida: 'dimensions' não encontrado no FACS config.",
+		);
+	}
+
+	const weights = rules.weights_by_code;
+	const combos = rules.combo_rules;
+	const dimensionsList = Object.keys(rules.dimensions);
 	const actionsMap = rules.default_actions_questions || {};
 
 	function process(inputPayload: WindowPayload): ExpressionResult {
@@ -70,7 +94,7 @@ export function createSalesScoringEngine(
 			}
 		}
 
-		const triggeredCombos: string[] = [];
+		const triggeredCombos: string[][] = [];
 		for (const combo of combos) {
 			const requiresMet = combo.requires.every((req) =>
 				activeCodes.includes(req),
@@ -81,7 +105,12 @@ export function createSalesScoringEngine(
 					: false;
 
 			if (requiresMet && !forbidsMet) {
-				triggeredCombos.push(combo.tag?.[0] || combo.id || "");
+				// Retorna o array completo de tags do combo, ou cria array com id se não houver tag
+				if (combo.tag && combo.tag.length > 0) {
+					triggeredCombos.push(combo.tag);
+				} else if (combo.id) {
+					triggeredCombos.push([combo.id]);
+				}
 				for (const [dim, adj] of Object.entries(combo.adjustments || {})) {
 					scores[dim] = (scores[dim] || 0) + adj;
 				}
