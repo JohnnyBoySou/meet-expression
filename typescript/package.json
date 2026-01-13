@@ -17,13 +17,13 @@
     "dist",
     "README.md"
   ],
-  "private": true,
+  "private": false,
   "scripts": {
     "build": "tsup",
     "build:watch": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts",
-    "prepublishOnly": "npm run build"
+    "prepare": "npm run build"
   },
   "dependencies": {},
   "devDependencies": {
