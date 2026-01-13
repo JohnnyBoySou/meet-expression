@@ -17,12 +17,12 @@
     "dist",
     "README.md"
   ],
-  "private": true,
+  "private": false,
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts",
-    "prepublishOnly": "npm run build"
+    "prepare": "npm run build"
   },
   "peerDependencies": {
     "@mediapipe/tasks-vision": "^0.10.11",
